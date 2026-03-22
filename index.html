@@ -245,6 +245,7 @@
 
         <div class="btns">
           <button class="primary" id="copyBtn">Copy Message</button>
+          <button class="secondary" id="waBusinessBtn">Open in WhatsApp Business</button>
           <button class="secondary" id="waBtn">Open in WhatsApp</button>
           <button class="ghost" id="resetBtn">Reset</button>
         </div>
@@ -348,9 +349,16 @@
         }
       });
 
+      el('waBusinessBtn').addEventListener('click', () => {
+        const encoded = encodeURIComponent(generateMessage());
+        const businessIntent = `intent://send?text=${encoded}#Intent;scheme=https;package=com.whatsapp.w4b;end`;
+        window.location.href = businessIntent;
+      });
+
       el('waBtn').addEventListener('click', () => {
         const encoded = encodeURIComponent(generateMessage());
-        window.open(`https://wa.me/?text=${encoded}`, '_blank');
+        const personalIntent = `intent://send?text=${encoded}#Intent;scheme=https;package=com.whatsapp;end`;
+        window.location.href = personalIntent;
       });
 
       el('resetBtn').addEventListener('click', () => {
@@ -372,3 +380,4 @@
   </script>
 </body>
 </html>
+
