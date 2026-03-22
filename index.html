@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Lemon Garden Booking Generator</title>
+  <meta name="theme-color" content="#1f7a4d" />
+  <style>
+    :root {
+      --bg: #f5fbf7;
+      --card: #ffffff;
+      --primary: #1f7a4d;
+      --primary-dark: #16603b;
+      --text: #163127;
+      --muted: #6b7d73;
+      --border: #dbe9e0;
+      --soft: #ecf7f0;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #eef9f2 0%, #ffffff 100%);
+      color: var(--text);
+    }
+
+    .wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 14px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 22px;
+      padding: 16px;
+      box-shadow: 0 10px 24px rgba(17, 45, 30, 0.08);
+      margin-bottom: 14px;
+      border: 1px solid rgba(219, 233, 224, 0.7);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.2;
+    }
+
+    .sub {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .stat {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .stat .label {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .stat .value {
+      margin-top: 6px;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    @media (min-width: 640px) {
+      .stats { grid-template-columns: repeat(4, 1fr); }
+      .two { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 13px 14px;
+      font-size: 16px;
+      background: #fff;
+      outline: none;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(31, 122, 77, 0.12);
+    }
+
+    textarea {
+      min-height: 320px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    .checkrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px;
+      border-radius: 16px;
+      background: var(--soft);
+      border: 1px solid var(--border);
+    }
+
+    .checkrow input {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+    }
+
+    .btns {
+      display: grid;
+      gap: 10px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 16px;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .primary:active { background: var(--primary-dark); }
+
+    .secondary {
+      background: #e8f5ec;
+      color: var(--primary-dark);
+    }
+
+    .ghost {
+      background: #fff;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .hint {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    .badge {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 12px;
+      background: #edf8f1;
+      color: var(--primary-dark);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Lemon Garden Booking Generator</h1>
+      <div class="sub">Mobile-friendly booking confirmation generator. Home screen-এ shortcut হিসেবে রাখলে app-এর মতো use করা যাবে.</div>
+      <div class="badge">Add to Home Screen supported</div>
+    </div>
+
+    <div class="card stats">
+      <div class="stat"><div class="label">Total</div><div class="value" id="statTotal">6,200</div></div>
+      <div class="stat"><div class="label">Advance</div><div class="value" id="statAdvance">3,100</div></div>
+      <div class="stat"><div class="label">Due</div><div class="value" id="statDue">3,100</div></div>
+      <div class="stat"><div class="label">Day(s)</div><div class="value" id="statDays">1</div></div>
+    </div>
+
+    <div class="card">
+      <div class="grid">
+        <div>
+          <label for="roomName">Room name</label>
+          <input id="roomName" value="Wooden Couple room" />
+        </div>
+
+        <div class="grid two">
+          <div>
+            <label for="quantity">Quantity</label>
+            <input id="quantity" type="number" min="1" value="1" />
+          </div>
+          <div>
+            <label for="extraQty">Extra flooring quantity</label>
+            <input id="extraQty" type="number" min="0" value="1" />
+          </div>
+        </div>
+
+        <div class="checkrow">
+          <input id="hasExtra" type="checkbox" checked />
+          <label for="hasExtra" style="margin:0; font-weight:600;">Extra flooring ache</label>
+        </div>
+
+        <div class="grid two">
+          <div>
+            <label for="totalTaka">Total taka</label>
+            <input id="totalTaka" type="number" min="0" value="6200" />
+          </div>
+          <div>
+            <label for="advance">Advance</label>
+            <input id="advance" type="number" min="0" value="3100" />
+          </div>
+        </div>
+
+        <div class="grid two">
+          <div>
+            <label for="checkIn">Check in date & time</label>
+            <input id="checkIn" type="datetime-local" value="2026-01-23T14:00" />
+          </div>
+          <div>
+            <label for="checkOut">Check out date & time</label>
+            <input id="checkOut" type="datetime-local" value="2026-01-24T12:00" />
+          </div>
+        </div>
+
+        <div class="btns">
+          <button class="primary" id="copyBtn">Copy Message</button>
+          <button class="secondary" id="waBtn">Open in WhatsApp</button>
+          <button class="ghost" id="resetBtn">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <label for="output">Generated Message</label>
+      <textarea id="output" readonly></textarea>
+      <div class="hint">Copy Message চাপলে text copy হবে। Open in WhatsApp চাপলে WhatsApp-এ message ready হবে।</div>
+    </div>
+  </div>
+
+  <script>
+    const el = (id) => document.getElementById(id);
+
+    const defaults = {
+      roomName: 'Wooden Couple room',
+      quantity: '1',
+      hasExtra: true,
+      extraQty: '1',
+      totalTaka: '6200',
+      advance: '3100',
+      checkIn: '2026-01-23T14:00',
+      checkOut: '2026-01-24T12:00'
+    };
+
+    function formatMoney(value) {
+      const num = Number(value || 0);
+      if (!Number.isFinite(num)) return '0';
+      return new Intl.NumberFormat('en-US').format(num);
+    }
+
+    function formatDateTime(value) {
+      if (!value) return '';
+      const date = new Date(value);
+      if (isNaN(date.getTime())) return value;
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const year = String(date.getFullYear()).slice(-2);
+      let hours = date.getHours();
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12 || 12;
+      const hourStr = String(hours).padStart(2, '0');
+      return `${day}-${month}-${year}-${hourStr}.${minutes} ${ampm}`;
+    }
+
+    function calculateDays(checkIn, checkOut) {
+      if (!checkIn || !checkOut) return 1;
+      const start = new Date(checkIn);
+      const end = new Date(checkOut);
+      if (isNaN(start.getTime()) || isNaN(end.getTime())) return 1;
+      const diff = end.getTime() - start.getTime();
+      const dayMs = 1000 * 60 * 60 * 24;
+      const days = Math.ceil(diff / dayMs);
+      return days > 0 ? days : 1;
+    }
+
+    function getRoomPart() {
+      const qty = Number(el('quantity').value || 0) || 0;
+      const roomText = `${qty} ${el('roomName').value}`;
+      const hasExtra = el('hasExtra').checked;
+      const extraQty = Number(el('extraQty').value || 0);
+      if (hasExtra && extraQty > 0) return `${roomText} with ${extraQty} Extra flooring`;
+      return roomText;
+    }
+
+    function generateMessage() {
+      const total = Number(el('totalTaka').value || 0);
+      const advance = Number(el('advance').value || 0);
+      const due = Math.max(0, total - advance);
+      const days = calculateDays(el('checkIn').value, el('checkOut').value);
+      const roomPart = getRoomPart();
+
+      el('statTotal').textContent = formatMoney(total);
+      el('statAdvance').textContent = formatMoney(advance);
+      el('statDue').textContent = formatMoney(due);
+      el('statDays').textContent = String(days);
+
+      const text = `Dear Sir/Madam,\nYour booking has been confirmed. We have received ${formatMoney(advance)}/-taka by bkash for ${roomPart} for ${days} day${days > 1 ? 's' : ''}. After discounting your total room rent ${formatMoney(total)}/- taka & advance ${formatMoney(advance)}/- taka & Due amount ${formatMoney(due)}/- taka. Due to the amount you have to pay in our check in time. Your Check in date is-${formatDateTime(el('checkIn').value)} & Check out date is ${formatDateTime(el('checkOut').value)}. Only breakfast & swimming pool including with room rent others all charge apply if you use.\n\nNote: Sir please bring your all adults persons NID cards or Birth certificate in your check in time.\nBreakfast Time:08.00 Am to 10.00 am.\n\nT&C: Non Refundable Advance Payment.\nEarly check in charge 75% of room rent.\n\nThanks & Regards\nAvisheak Roy\nLemon Garden Resort.`;
+
+      el('output').value = text;
+      return text;
+    }
+
+    function bind() {
+      ['roomName', 'quantity', 'hasExtra', 'extraQty', 'totalTaka', 'advance', 'checkIn', 'checkOut'].forEach((id) => {
+        el(id).addEventListener('input', generateMessage);
+        el(id).addEventListener('change', generateMessage);
+      });
+
+      el('copyBtn').addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(generateMessage());
+          const prev = el('copyBtn').textContent;
+          el('copyBtn').textContent = 'Copied';
+          setTimeout(() => el('copyBtn').textContent = prev, 1500);
+        } catch {
+          alert('Copy failed. Please copy manually.');
+        }
+      });
+
+      el('waBtn').addEventListener('click', () => {
+        const encoded = encodeURIComponent(generateMessage());
+        window.open(`https://wa.me/?text=${encoded}`, '_blank');
+      });
+
+      el('resetBtn').addEventListener('click', () => {
+        el('roomName').value = defaults.roomName;
+        el('quantity').value = defaults.quantity;
+        el('hasExtra').checked = defaults.hasExtra;
+        el('extraQty').value = defaults.extraQty;
+        el('totalTaka').value = defaults.totalTaka;
+        el('advance').value = defaults.advance;
+        el('checkIn').value = defaults.checkIn;
+        el('checkOut').value = defaults.checkOut;
+        generateMessage();
+      });
+
+      generateMessage();
+    }
+
+    bind();
+  </script>
+</body>
+</html>
